@@ -323,7 +323,6 @@ or pipeline) parameterized.
     <!-- more metadata goes in the footer -->
     <div id="{$this-article}-footer" class="footer">
       <xsl:call-template name="footer-metadata"/>
-      <xsl:call-template name="footer-branding"/>
     </div>
 
     <!-- sub-article or response (recursively calls
@@ -3936,26 +3935,6 @@ or pipeline) parameterized.
     </xsl:for-each>
   </xsl:template>
 
-
-<!-- ============================================================= -->
-<!--  Footer branding                                              -->
-<!-- ============================================================= -->
-
-  <xsl:template name="footer-branding">
-    <hr class="part-rule"/>
-    <div class="branding">
-      <p>
-        <xsl:text>This display is generated from </xsl:text>
-        <xsl:text>NISO JATS XML with </xsl:text>
-        <b>
-          <xsl:value-of select="$transform"/>
-        </b>
-        <xsl:text>. The XSLT engine is </xsl:text>
-        <xsl:value-of select="system-property('xsl:vendor')"/>
-        <xsl:text>.</xsl:text>
-      </p>
-    </div>
-  </xsl:template>
 
   <!-- ============================================================= -->
   <!--  Utility templates for generating warnings and reports        -->
