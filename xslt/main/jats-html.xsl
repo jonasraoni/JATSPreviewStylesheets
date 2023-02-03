@@ -1550,7 +1550,7 @@ or pipeline) parameterized.
     and @equal-contrib -->
     <div class="metadata-group">
       <xsl:for-each select="anonymous |
-        collab | collab-alternatives/* | name | name-alternatives/*">
+        collab | collab-alternatives/* | name | string-name | name-alternatives/*">
         <xsl:call-template name="metadata-entry">
           <xsl:with-param name="contents">
             <xsl:if test="position() = 1">
@@ -1597,6 +1597,7 @@ or pipeline) parameterized.
 
 
   <xsl:template match="contrib/name |
+                       contrib/string-name |
                        contrib/name-alternatives/*" mode="metadata-inline">
     <xsl:apply-templates select="."/>
   </xsl:template>
@@ -3541,7 +3542,7 @@ or pipeline) parameterized.
 
   <!-- Called when displaying structured names in metadata         -->
 
-  <xsl:template match="name">
+  <xsl:template match="name | string-name">
     <xsl:apply-templates select="prefix" mode="inline-name"/>
     <xsl:apply-templates select="surname[../@name-style='eastern']"
       mode="inline-name"/>
@@ -3568,7 +3569,7 @@ or pipeline) parameterized.
   </xsl:template>
 
 
-  <xsl:template match="contrib/name/surname" mode="inline-name">
+  <xsl:template match="contrib/name/surname | contrib/string-name/surname" mode="inline-name">
     <xsl:apply-templates/>
     <xsl:if test="../given-names[../@name-style='eastern'] | ../suffix">
       <xsl:text> </xsl:text>
@@ -3642,7 +3643,9 @@ or pipeline) parameterized.
         <xsl:if test="normalize-space(string($label))">
           <span class="generated">
             <xsl:copy-of select="$label"/>
-            <xsl:text>: </xsl:text>
+            <xsl:if test="not(contains(normalize-space(string($label)), ':'))">
+              <xsl:text>: </xsl:text>
+            </xsl:if>
           </span>
         </xsl:if>
         <xsl:copy-of select="$contents"/>
@@ -3922,6 +3925,7 @@ or pipeline) parameterized.
   <xsl:template name="author-string">
     <xsl:variable name="all-contribs"
       select="/article/front/article-meta/contrib-group/contrib/name/surname |
+              /article/front/article-meta/contrib-group/contrib/string-name/surname |
               /article/front/article-meta/contrib-group/contrib/collab"/>
    <xsl:for-each select="$all-contribs">
       <xsl:if test="count($all-contribs) &gt; 1">
